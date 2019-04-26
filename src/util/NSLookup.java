@@ -30,14 +30,22 @@ public class NSLookup {
 				System.out.print("> ");
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
 			System.out.println(e.getLocalizedMessage() +" 존재하지 않는 도메인 입니다");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} finally {
+			try {
+				if(br != null) {
+					br.close();					
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 
 	}
