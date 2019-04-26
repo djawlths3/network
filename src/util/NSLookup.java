@@ -28,6 +28,7 @@ public class NSLookup {
 					System.out.println("종료~");
 					break;
 				}
+				System.out.println("loading...");
 				InetAddress[] inetAddress = InetAddress.getAllByName(line);
 				for(InetAddress ia : inetAddress) {
 					System.out.println( line + ": " + ia.getHostAddress());
@@ -37,7 +38,6 @@ public class NSLookup {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
-			// e.printStackTrace();
 			System.out.println(e.getLocalizedMessage() +" 존재하지 않는 도메인 입니다");
 			domainToIp();
 		} catch (IOException e) {
