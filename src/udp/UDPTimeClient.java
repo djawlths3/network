@@ -36,6 +36,7 @@ public class UDPTimeClient {
 				System.out.print(">>");
 				String line = sanner.nextLine();
 				if("quit".contentEquals(line)) {
+					socket.send(new DatagramPacket("quit".getBytes("utf-8"), sendData.length, new InetSocketAddress(SERVER_IP,UDPEchoServer.PORT)));
 					break;
 				}
 				
