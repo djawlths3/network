@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class TCPserver {
 
@@ -14,12 +15,17 @@ public class TCPserver {
 		try {
 			//1. 서버소켓생성
 			serverSocket = new ServerSocket();
+			//1-1Time-wait 시간에 소켓에 포트번호 할당을 가능하게 하기 위해서
+			serverSocket.setReuseAddress(true);
+			
+			//1-2
+			
 			
 			//2. binding, socket = socketAddress(IPAddress +port)
 			//InetAddress inetAddress = InetAddress.getLocalHost();
 			//String localhost = inetAddress.getHostAddress();
 			String localhost = "0.0.0.0";
-			int port = 5000;
+			int port = 6000;
 			serverSocket.bind(new InetSocketAddress(localhost, port));
 
 			//3.accept, connect wait
@@ -47,14 +53,22 @@ public class TCPserver {
 					String data = new String(buffer, 0,readByteCount, "UTF-8");
 					System.out.println("[server] received: "+data);
 					
-					
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					//6. data write
 					os.write( data.getBytes("utf-8") );
-				}
-				
-			} catch (IOException e) {
+					
+				}			
+			} catch (SocketException e) {
+				System.out.println("[server] sudden closed by client");
+			} 
+			catch (IOException e) {
 				e.printStackTrace();
-			} finally {
+			}finally {
 				if(socket != null && socket.isClosed()) {
 					socket.close();					
 				}

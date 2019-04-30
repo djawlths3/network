@@ -24,7 +24,7 @@ public class NSLookup {
 			br =new BufferedReader(isr);
 			String line = null;
 			while((line = br.readLine()) != null) {				
-				if(line.equals("exit")) {
+				if("exit".equals(line)) {
 					System.out.println("종료~");
 					break;
 				}
