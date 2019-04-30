@@ -25,9 +25,6 @@ public class UDPTimeServer {
 				
 				socket.receive(receivePacket);
 				int clientPort = receivePacket.getPort();
-				
-				System.out.println(receivePacket.getPort() );
-				
 				byte[] data = receivePacket.getData();
 				int length = receivePacket.getLength();
 				String message = new String(data,0,length,"UTF-8");
