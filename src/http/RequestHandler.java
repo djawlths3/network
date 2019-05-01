@@ -7,11 +7,23 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private Socket socket;
-	private static final String DOCUMENT_ROOT = "./webapp";
+	private static String documentRoot = "";
+	// /netwokr/resources/webapp
+	static {
+		try {
+			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+			documentRoot += "/webapp";
+			System.out.println(documentRoot);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public RequestHandler( Socket socket ) {
 		this.socket = socket;
 	}
@@ -84,7 +96,7 @@ public class RequestHandler extends Thread {
 			url = "/index.html";
 		}
 		
-		File file = new File(DOCUMENT_ROOT + url);		
+		File file = new File(documentRoot + url);		
 		if(file.exists() == false) {
 			response404Error(os,protocol);
 			return;
@@ -99,7 +111,7 @@ public class RequestHandler extends Thread {
 	}
 
 	public void response404Error(OutputStream os, String protocol) throws IOException {
-		File file = new File(DOCUMENT_ROOT + "/error/404.html");
+		File file = new File(documentRoot + "/error/404.html");
 		String contentType = Files.probeContentType(file.toPath());
 		byte[] body = Files.readAllBytes(file.toPath());
 		os.write( ( protocol + " 404 File Not Found \\r\\n").getBytes( "UTF-8" ) );
@@ -109,7 +121,7 @@ public class RequestHandler extends Thread {
 	}
 	
 	public void response400Error(OutputStream os, String protocol) throws IOException {
-		File file = new File(DOCUMENT_ROOT + "/error/400.html");
+		File file = new File(documentRoot + "/error/400.html");
 		String contentType = Files.probeContentType(file.toPath());
 		byte[] body = Files.readAllBytes(file.toPath());
 		os.write( ( protocol + " 400 Bad Request\\r\\n").getBytes( "UTF-8" ) );
